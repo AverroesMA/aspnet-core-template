@@ -15,6 +15,7 @@ namespace Template.Controllers
     public class IdentityController : ApiController
     {
         private readonly UserManager<User> userManager;
+
         private readonly AppSettings appSettings;
 
         public IdentityController(UserManager<User> userManager, IOptions<AppSettings> appSettings)
@@ -59,7 +60,8 @@ namespace Template.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id)
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
